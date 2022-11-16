@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 import userRepository from '../repositories/userRepository';
-import { conflictError } from '../utils/errorUtils';
-import { encryptPassword } from '../utils/passwordUtils.js';
+import { conflictError, notFoundError } from '../utils/errorUtils';
+import { encryptPassword, verifyPassword } from '../utils/passwordUtils.js';
 
 async function createUser(username: string, password: string) {
 	const passwordEncrypted = encryptPassword(password);
@@ -17,12 +17,13 @@ async function signin(username: string, password: string) {
 
 	verifyPassword(password, userDb.password);
 
-	const token = jwt.sign({ email, id: userDb.id }, process.env.JWT_SECRET);
+	const token = jwt.sign({ username, id: userDb.id }, process.env.JWT_SECRET, { expiresIn: 86400 });
 
-	return token;
+	return { username, token };
 }
+
 async function getUserOrFailByUsername(username: string) {
-	const user = await userRepository.getByUsername(id);
+	const user = await userRepository.getByUsername(username);
 	if (!user) throw notFoundError('User not found');
 
 	return user;
