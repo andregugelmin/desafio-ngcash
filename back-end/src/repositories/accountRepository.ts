@@ -25,9 +25,23 @@ async function getByUserID(id: number) {
 	}
 }
 
+async function getByUsername(username: string) {
+	try {
+		return await prisma.user.findFirst({
+			where: {
+				username,
+			},
+			select: { id: false, username: false, account: true },
+		});
+	} catch (error) {
+		console.log(error);
+	}
+}
+
 const accountRepository = {
 	getById,
 	getByUserID,
+	getByUsername,
 };
 
 export default accountRepository;
