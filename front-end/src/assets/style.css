@@ -1,4 +1,13 @@
 * {
 	text-decoration: none;
 	box-sizing: border-box;
+	font-family: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+	background-color: #181818;
+}
+
+button:hover {
+	cursor: pointer;
 }

@@ -2,10 +2,18 @@ import styled from 'styled-components';
 export const Main = styled.header`
 	position: fixed;
 	right: 0;
-	top: 0;
 	left: 0;
-	height: 80px;
+	top: 0;
 	background-color: white;
-	font-size: 30px;
+	color: black;
+	height: 80px;
+	font-size: 36px;
 	z-index: 1;
+	display: flex;
+	align-items: center;
+	justify-content: space-around;
+
+	.icon:hover {
+		cursor: pointer;
+	}
 `;

@@ -6,7 +6,8 @@ import { conflictError, notFoundError, unauthorizedError } from '../utils/errorU
 async function createTransaction(cashoutUserId: number, cashinUsername: string, value: number) {
 	const creditedAccount = await accountRepository.getByUsername(cashinUsername);
 	const debitedAccount = await accountRepository.getByUserID(cashoutUserId);
-	validateTransaction(creditedAccount.account, debitedAccount.account, value);
+
+	validateTransaction(creditedAccount, debitedAccount, value);
 
 	await transactionRepository.insert({
 		creditedAccountId: creditedAccount.account.id,
@@ -15,12 +16,13 @@ async function createTransaction(cashoutUserId: number, cashinUsername: string, 
 	});
 }
 
-function validateTransaction(creditedAccount: Account, debitedAccount: Account, value: number) {
-	if (creditedAccount.id === debitedAccount.id) throw conflictError('Credited and debited cannot be the same account');
-
+function validateTransaction(creditedAccount: any, debitedAccount: any, value: number) {
 	if (!creditedAccount || !debitedAccount) {
-		throw notFoundError('Could not find credited or debited user');
+		throw notFoundError('Could not find user');
 	}
+	if (creditedAccount.account.id === debitedAccount.account.id)
+		throw conflictError('You cannot transaction to your own account');
+
 	if (creditedAccount.balance - value < 0)
 		throw unauthorizedError('Credited account does not have sufficient balance amount for the transaction');
 }

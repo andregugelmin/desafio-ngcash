@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { IoLogOutOutline } from 'react-icons/io5';
 import useAuth from '../../hooks/useAuth';
 import { Main } from './style';
 
@@ -13,7 +14,8 @@ export default function Header(props) {
 	}
 	return (
 		<Main>
-			<button onClick={handleSignout}>Sign Out</button>
+			<p>NG.CASH</p>
+			<IoLogOutOutline className="icon" onClick={handleSignout} />
 		</Main>
 	);
 }

@@ -1,27 +1,36 @@
 import React, { useEffect } from 'react';
 import { useState } from 'react';
-import { Main } from './style';
+import { useAlert } from 'react-alert';
 import { Link, useNavigate } from 'react-router-dom';
+
+import { Main } from './style';
 import useSignUp from '../../hooks/api/useSignUp';
 
 export default function SignUpPage() {
-	const { loadingSignUp, signup, signupError } = useSignUp();
+	const { signupData, loadingSignUp, signup, signupError } = useSignUp();
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 
 	const navigate = useNavigate();
+	const alert = useAlert();
 
 	useEffect(() => {
 		if (signupError) {
-			alert('Error signing up!');
+			alert.error(signupError.response.data);
 		}
 	}, [signupError]);
+	useEffect(() => {
+		if (signupData === 'Created') {
+			alert.success('Account created!');
+			navigate('/');
+		}
+	}, [signupData]);
 
 	function submitLogin(e) {
 		e.preventDefault();
 		if (confirmPassword !== password) {
-			alert('Confirmação de senha esta diferente!');
+			alert.error('Password and confirmation must be equals!');
 			return;
 		}
 
@@ -41,34 +50,39 @@ export default function SignUpPage() {
 
 	return (
 		<Main>
-			<h1>NG CASH</h1>
+			<h1>Create your ng.account!</h1>
 			<form onSubmit={(e) => submitLogin(e)}>
-				<label>Username</label>
-				<input
-					type="text"
-					onChange={(e) => setUsername(e.target.value)}
-					required
-					minLength={3}
-					pattern={'[a-zA-z]{3,}'}
-					disabled={loadingSignUp ? true : false}
-				></input>
+				<div className="input-label">
+					<label>Username</label>
+					<input
+						type="text"
+						onChange={(e) => setUsername(e.target.value)}
+						required
+						minLength={3}
+						pattern={'[a-zA-z]{3,}'}
+						disabled={loadingSignUp ? true : false}
+					></input>
+				</div>
 
-				<label>Password</label>
-				<input
-					type="password"
-					onChange={(e) => setPassword(e.target.value)}
-					required
-					minLength={8}
-					disabled={loadingSignUp ? true : false}
-				></input>
-
-				<label>Confirm Password</label>
-				<input
-					type="password"
-					onChange={(e) => setConfirmPassword(e.target.value)}
-					required
-					disabled={loadingSignUp ? true : false}
-				></input>
+				<div className="input-label">
+					<label>Password</label>
+					<input
+						type="password"
+						onChange={(e) => setPassword(e.target.value)}
+						required
+						minLength={8}
+						disabled={loadingSignUp ? true : false}
+					></input>
+				</div>
+				<div className="input-label">
+					<label>Confirm Password</label>
+					<input
+						type="password"
+						onChange={(e) => setConfirmPassword(e.target.value)}
+						required
+						disabled={loadingSignUp ? true : false}
+					></input>
+				</div>
 
 				<button type="submit" disabled={loadingSignUp ? true : false}>
 					Sign Up

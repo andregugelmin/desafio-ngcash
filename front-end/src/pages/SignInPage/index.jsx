@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Main } from './style';
 import { Link, useNavigate } from 'react-router-dom';
+import { useAlert } from 'react-alert';
+
+import { Main } from './style';
 import useAuth from '../../hooks/useAuth';
 import useLogin from '../../hooks/api/useLogin';
+import Logo from '../../assets/images/ngcashlogo.png';
 
 export default function SignInPage() {
 	const { signIn } = useAuth();
+	const alert = useAlert();
+
 	const { loadingLogin, login, loginError, loginData } = useLogin();
 
 	const [username, setUsername] = useState('');
@@ -15,13 +20,14 @@ export default function SignInPage() {
 
 	useEffect(() => {
 		if (loginError) {
-			alert(loginError.response.data);
+			alert.error(loginError.response.data);
 		}
 	}, [loginError]);
 
 	useEffect(() => {
 		if (loginData) {
 			signIn(loginData.token);
+			alert.success('Login success');
 			navigate('/account');
 		}
 	}, [loginData]);
@@ -43,23 +49,26 @@ export default function SignInPage() {
 
 	return (
 		<Main>
-			<h1>NG CASH</h1>
+			<img src={Logo} alt="logo" />
 			<form onSubmit={(e) => submitLogin(e)}>
-				<label>Username</label>
-				<input
-					type="text"
-					onChange={(e) => setUsername(e.target.value)}
-					required
-					disabled={loadingLogin ? true : false}
-				></input>
-
-				<label>Password</label>
-				<input
-					type="password"
-					onChange={(e) => setPassword(e.target.value)}
-					required
-					disabled={loadingLogin ? true : false}
-				></input>
+				<div className="input-label">
+					<label>Username</label>
+					<input
+						type="text"
+						onChange={(e) => setUsername(e.target.value)}
+						required
+						disabled={loadingLogin ? true : false}
+					></input>
+				</div>
+				<div className="input-label">
+					<label>Password</label>
+					<input
+						type="password"
+						onChange={(e) => setPassword(e.target.value)}
+						required
+						disabled={loadingLogin ? true : false}
+					></input>
+				</div>
 
 				<button type="submit" required disabled={loadingLogin ? true : false}>
 					Log In

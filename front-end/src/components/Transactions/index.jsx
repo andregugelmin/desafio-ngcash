@@ -1,20 +1,20 @@
+import dayjs from 'dayjs';
 import { Container } from './style';
 
 export default function Transactions(props) {
-	const { transactions } = props;
-	console.log(transactions);
+	const { type, transactions } = props;
 	return (
 		<Container>
-			<h1>Transactions</h1>
+			<h1>{type}</h1>
 			{transactions.length > 0 ? (
 				transactions.map((elem, i) => {
 					return (
-						<div key={i}>
+						<div key={i} className="transaction">
 							<p>
-								De {elem.debitedUser} para {elem.creditedUser}
+								From {elem.debitedUser} to {elem.creditedUser}
 							</p>
-							<p>{(elem.value / 100).toFixed(2)}</p>
-							<p>{elem.date}</p>
+							<p>$ {(elem.value / 100).toFixed(2)}</p>
+							<p>{dayjs(elem.date).format('DD/MM/YYYY HH:mm')}</p>
 						</div>
 					);
 				})
