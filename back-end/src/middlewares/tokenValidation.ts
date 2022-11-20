@@ -5,6 +5,7 @@ import { unauthorizedError } from '../utils/errorUtils.js';
 export function validateToken(req: Request, res: Response, next: NextFunction) {
 	const authorization = req.headers['authorization'];
 	const token = authorization?.replace('Bearer ', '');
+
 	if (!token) {
 		throw unauthorizedError('No token');
 	}
@@ -17,6 +18,5 @@ export function validateToken(req: Request, res: Response, next: NextFunction) {
 	});
 
 	res.locals.user = userDecoded;
-
 	next();
 }

@@ -18,7 +18,7 @@ async function getByUserID(id: number) {
 			where: {
 				id,
 			},
-			select: { id: false, username: false, account: true },
+			select: { id: false, username: true, account: true },
 		});
 	} catch (error) {
 		console.log(error);
@@ -31,7 +31,7 @@ async function getByUsername(username: string) {
 			where: {
 				username,
 			},
-			select: { id: false, username: false, account: true },
+			select: { id: true, username: true, account: true },
 		});
 	} catch (error) {
 		console.log(error);

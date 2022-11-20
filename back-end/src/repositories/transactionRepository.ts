@@ -19,7 +19,44 @@ async function getByAccountId(id: number) {
 			where: {
 				id,
 			},
-			select: { id: false, balance: false, TransactionDebit: true, TransactionCredit: true },
+			select: {
+				TransactionDebit: {
+					select: {
+						id: true,
+						value: true,
+						createdAt: true,
+						creditedAccount: {
+							select: {
+								User: true,
+							},
+						},
+						debitedAccount: {
+							select: {
+								User: true,
+							},
+						},
+					},
+					orderBy: { createdAt: 'desc' },
+				},
+				TransactionCredit: {
+					select: {
+						id: true,
+						value: true,
+						createdAt: true,
+						creditedAccount: {
+							select: {
+								User: true,
+							},
+						},
+						debitedAccount: {
+							select: {
+								User: true,
+							},
+						},
+					},
+					orderBy: { createdAt: 'desc' },
+				},
+			},
 		});
 	} catch (error) {
 		console.log(error);

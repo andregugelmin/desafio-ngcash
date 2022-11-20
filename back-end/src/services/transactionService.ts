@@ -1,22 +1,21 @@
 import { Account } from '@prisma/client';
-import accountRepository from '../repositories/accountRepository';
-import transactionRepository from '../repositories/transactionRepository';
-import { conflictError, notFoundError, unauthorizedError } from '../utils/errorUtils';
+import accountRepository from '../repositories/accountRepository.js';
+import transactionRepository from '../repositories/transactionRepository.js';
+import { conflictError, notFoundError, unauthorizedError } from '../utils/errorUtils.js';
 
 async function createTransaction(cashoutUserId: number, cashinUsername: string, value: number) {
-	const creditedAccount = await await (await accountRepository.getByUsername(cashinUsername)).account;
-	const debitedAccount = await await (await accountRepository.getByUserID(cashoutUserId)).account;
+	const creditedAccount = await accountRepository.getByUsername(cashinUsername);
+	const debitedAccount = await accountRepository.getByUserID(cashoutUserId);
+	validateTransaction(creditedAccount.account, debitedAccount.account, value);
 
-	validateTransaction(creditedAccount, debitedAccount, value);
-
-	transactionRepository.insert({
-		creditedAccountId: creditedAccount.id,
-		debitedAccountId: debitedAccount.id,
+	await transactionRepository.insert({
+		creditedAccountId: creditedAccount.account.id,
+		debitedAccountId: debitedAccount.account.id,
 		value,
 	});
 }
 
-async function validateTransaction(creditedAccount: Account, debitedAccount: Account, value: number) {
+function validateTransaction(creditedAccount: Account, debitedAccount: Account, value: number) {
 	if (creditedAccount.id === debitedAccount.id) throw conflictError('Credited and debited cannot be the same account');
 
 	if (!creditedAccount || !debitedAccount) {

@@ -3,7 +3,6 @@ import userService from '../services/userService.js';
 
 export async function signup(req: Request, res: Response) {
 	const { username, password } = req.body;
-
 	await userService.createUser(username, password);
 	res.sendStatus(201);
 }

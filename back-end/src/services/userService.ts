@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
-import userRepository from '../repositories/userRepository';
-import { conflictError, notFoundError } from '../utils/errorUtils';
+import userRepository from '../repositories/userRepository.js';
+import { conflictError, notFoundError } from '../utils/errorUtils.js';
 import { encryptPassword, verifyPassword } from '../utils/passwordUtils.js';
 
 async function createUser(username: string, password: string) {
