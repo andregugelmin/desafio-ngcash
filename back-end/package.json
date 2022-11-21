@@ -6,8 +6,10 @@
 	"type": "module",
 	"scripts": {
 		"build": "tsc",
-		"start": "node dist/server.js",
-		"dev": "nodemon src/server.ts"
+		"start": "npm run prisma:deploy && prisma generate && node dist/server.js",
+		"dev": "nodemon src/server.ts",
+		"prisma:migrate": "prisma migrate dev",
+		"prisma:deploy": "prisma migrate deploy"
 	},
 	"keywords": [],
 	"author": "",

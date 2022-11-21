@@ -36,7 +36,7 @@ export default function CashoutPage(props) {
 	}, [cashoutError]);
 
 	useEffect(() => {
-		if (cashoutData == 'OK') alert.success('Transaction succeed');
+		if (cashoutData === 'OK') alert.success('Transaction succeed');
 	}, [cashoutData]);
 
 	const handleCashout = async (data) => {
