@@ -57,4 +57,50 @@ $ npm start
 ```
  
   - Access localhost:3000 in your browser
+  
+  ---
+  
+  API:
+
+- POST /signup
+```
+    - New account sign up route 
+    - body: {
+        "username": [string] - min 3 characters,
+        "password": [string] - min 8 characters, must have an upper case letter, a symbol and a number
+        "confirmPassword": [string] - ref password
+    } 
+```
+
+- POST /signin
+```
+    - Sign in an existing account route 
+    - body: {
+        "username": [string] 
+        "password": [string]
+    } 
+    - Will receive a token    
+```
+
+- GET /account
+```
+    - Route to get account balance and transactions
+    - headers: {
+			Authorization: `Bearer {token}`,
+		} 
+```  
+
+- POST /cashout
+```  
+    - Route to perform a cashout
+    - headers: {
+			Authorization: `Bearer {token}`,
+		}
+    - body: {
+        "username": [string] - username of credited account
+        "value": [number] 
+    }
+```  
+    
+
  
